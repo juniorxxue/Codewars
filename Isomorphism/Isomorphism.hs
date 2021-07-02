@@ -118,8 +118,19 @@ isoTupleVoid :: ISO () Void
 -- (() -> Void, Void -> ())
 isoTupleVoid = undefined
 
+
+-- the secrete here is find bisection between
+-- Void - ()
+-- () - () ()
+-- () () - () () ()
 isoEU :: ISO (Either [()] ()) (Either [()] Void)
-isoEU = undefined
+isoEU = (f, f') where
+  f = \x -> case x of
+    Left p -> Left p
+    Right () -> Left []
+  f' = \x -> case x of
+    Left [] -> Right ()
+    Left (_:xs) -> Left xs
 
 isoSymm :: ISO (ISO a b) (ISO b a)
 -- ((ISO a b) -> (ISO b a), (ISO b a) -> (ISO a b))
